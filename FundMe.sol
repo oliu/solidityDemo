@@ -4,7 +4,13 @@ pragma solidity ^0.8.20;
 
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-
+/*
+1.收款函数
+2.记录投资人并且查看
+3.在锁定期内，达到目标值，生产商可以提款
+4.在锁定期内，没有达到目标值，投资人可以退款
+*/
+// Wei Gwei=10^9Wei Finney=10^15 Ether=10^18
 contract FundMe {
     mapping (address => uint256) public founderToAmount;
 
@@ -17,7 +23,7 @@ contract FundMe {
         // sepolia testnet
         dataFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
     }
-
+ //payable 可以用于接收链上原生通证
     function fund() external payable {
         require(convertEthToUsd(msg.value) >= MINIMUM_VALUE, "Send more ETH!");
         founderToAmount[msg.sender] = msg.value;
